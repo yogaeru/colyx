@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import "@astryxdesign/core/reset.css";
+@import "@astryxdesign/core/astryx.css";
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
+
+
+* {
+  box-sizing: border-box;
+  font-family: "Plus Jakarta Sans";
+  transition: background-color 500ms ease-out, color 500ms ease-out;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}

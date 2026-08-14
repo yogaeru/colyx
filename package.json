@@ -1,0 +1,53 @@
+{
+  "name": "mex",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vite dev --host 0.0.0.0 --port 3000",
+    "generate-routes": "tsr generate",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@astryxdesign/cli": "^0.3.0",
+    "@astryxdesign/core": "^0.3.0",
+    "@astryxdesign/theme-neutral": "^0.3.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-devtools": "latest",
+    "@tanstack/react-router": "latest",
+    "@tanstack/react-router-devtools": "latest",
+    "@tanstack/react-start": "latest",
+    "@tanstack/react-store": "latest",
+    "@tanstack/store": "latest",
+    "clsx": "^2.1.1",
+    "koffi": "^3.1.4",
+    "lucide-react": "^1.31.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sharp": "^0.35.3",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tanstack/devtools-event-client": "latest",
+    "@tanstack/devtools-vite": "latest",
+    "@tanstack/router-cli": "^1.132.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.0"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "nub",
+      "version": "^0.6.0",
+      "onFail": "warn"
+    }
+  }
+}

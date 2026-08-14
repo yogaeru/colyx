@@ -1,0 +1,6 @@
+FROM ghcr.io/nubjs/nub:0.7.5
+WORKDIR  /app
+COPY . .
+RUN nub ci 
+CMD ["nub", "run", "dev"]
+
