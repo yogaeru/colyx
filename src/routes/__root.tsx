@@ -49,7 +49,9 @@ function RootContainer({ children }: { children: React.ReactNode }) {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const theme = useSelector(themeStore, (s) => s);
+  const themeState = useSelector(themeStore, (s) => s);
+  const theme = themeState.theme ?? defaultTheme;
+  const themeMode = themeState.mode ?? "dark";
 
   return (
     <html lang="en">
@@ -58,14 +60,16 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <Theme
-          theme={theme?.theme ?? defaultTheme}
-          mode={theme?.mode ?? "dark"}
+          theme={theme}
+          mode={themeMode}
         >
           <RootContainer>
             <Navbar />
             {children}
           </RootContainer>
         </Theme>
+        
+        
         <TanStackDevtools
           config={{
             position: "bottom-right",

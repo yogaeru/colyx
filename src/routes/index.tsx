@@ -8,6 +8,7 @@ import {
   useTheme,
   Selector,
   Divider,
+  useToast,
 } from "@astryxdesign/core";
 import { ArrowBigDownDash } from "lucide-react";
 
@@ -41,12 +42,16 @@ const formStore = createStore<RequestColorsForm>({
 
 function Home() {
   const { tokens } = useTheme();
+  const toast = useToast();
   const formState = useSelector(formStore, (state) => state);
+
   const [imageValue, setImageValue] = useState<File | File[] | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [submitData, setSubmitData] = useState<
     (ExtractColorsSuccess | null)[] | null
   >(null);
+
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const srollIntoContent = () => {
     const content = document.getElementById("content");
@@ -68,6 +73,7 @@ function Home() {
     formData.append("colorFormat", formState.colorFormat);
     formData.append("schemeType", formState.schemeType);
 
+    setIsSubmit(true);
     const colors = await extractColorsFn({
       data: formData,
     });
@@ -75,6 +81,14 @@ function Home() {
     if (colors) {
       setSubmitData(colors);
     }
+
+    setIsSubmit(false);
+    toast({
+      body: "Colors extracted successfully!",
+      type: "info",
+      isAutoHide: true,
+      autoHideDuration: 1500,
+    });
   };
 
   return (
@@ -146,6 +160,7 @@ function Home() {
                       variant="primary"
                       size="lg"
                       icon={<ArrowBigDownDash size={18} />}
+                      isDisabled={isSubmit}
                     />
                   </VStack>
                 </form>
