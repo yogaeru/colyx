@@ -10,7 +10,7 @@
     "generate-routes": "tsr generate",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "nub .output/server/inde.mjs"
+    "start": "nub .output/server/index.mjs"
   },
   "dependencies": {
     "@astryxdesign/cli": "^0.3.0",

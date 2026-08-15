@@ -15,7 +15,6 @@ import { cn } from "#/lib/cn";
 import Hero from "#/components/Hero";
 import ColorTable from "#/components/ui/astryx/ColorTable";
 import AstryxFileInput from "#/components/ui/astryx/FileInput";
-import Footer from "#/components/Footer";
 import { extractColorsFn } from "#/server/extractColors";
 import {
   selectionColorFormat,
