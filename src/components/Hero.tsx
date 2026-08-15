@@ -76,7 +76,7 @@ export default function Hero({ onStart }: { onStart: () => void }) {
 
   return (
     <section
-      className={`p-10 md:p-15 lg:p-25 sticky z-0`}
+      className={`p-10 md:p-15 lg:p-25 sticky z-0 overflow-hidden`}
       style={{
         top: navBarHeight,
       }}
@@ -100,7 +100,7 @@ export default function Hero({ onStart }: { onStart: () => void }) {
             as="p"
             children={asciiLogo}
             className="whitespace-pre"
-            size="sm"
+            size="xsm"
           />
 
           <Heading

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { createStore, useSelector } from "@tanstack/react-store";
+import { ArrowBigDownDash } from "lucide-react";
 import {
   Button,
   VStack,
@@ -10,18 +11,18 @@ import {
   Divider,
   useToast,
 } from "@astryxdesign/core";
-import { ArrowBigDownDash } from "lucide-react";
 
 import { cn } from "#/lib/cn";
 import Hero from "#/components/Hero";
 import ColorTable from "#/components/ui/astryx/ColorTable";
 import AstryxFileInput from "#/components/ui/astryx/FileInput";
+import Footer from "#/components/Footer";
 import { extractColorsFn } from "#/server/extractColors";
 import {
   selectionColorFormat,
   selectionScheme,
   type RequestColorsForm,
-} from "#/data/color";
+} from "@/data/color";
 
 import type {
   ColorOutputFormat,
@@ -98,7 +99,7 @@ function Home() {
       <section
         id="content"
         className={cn(
-          "min-h-[50dvh] md:min-h-[60dvh] lg:min-h-[70dvh]",
+          "min-h-[50dvh] md:min-h-[60dvh] lg:min-h-[65dvh]",
           "relative z-1",
           "py-15 px-5 lg:py-10 lg:px-40",
         )}
@@ -176,7 +177,7 @@ function Home() {
         </VStack>
       </section>
 
-      {/*<Footer />*/}
+      <Footer />
     </>
   );
 }

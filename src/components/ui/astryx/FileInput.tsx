@@ -27,7 +27,7 @@ export default function AstryxFileInput({
   return (
     <VStack className={cn("w-full")} gap={4} hAlign="center">
       <FileInput
-        className="h-25 md:h-35 lg:h-45"
+        className="h-25 md:h-30 lg:h-40"
         width="100%"
         label="Upload Image"
         value={null}
