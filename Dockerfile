@@ -6,17 +6,23 @@ RUN nub ci
 FROM ghcr.io/nubjs/nub:0.7.5 AS production-build
 COPY . /app
 WORKDIR /app
-RUN nub ci --omit=dev
+RUN nub install --prod --frozen-lockfile
 
 FROM ghcr.io/nubjs/nub:0.7.5 AS build
-COPY . /app/
-COPY --from=development-build /app/node_modules /app/node_modules
 WORKDIR /app
+
+COPY --chown=node:node . . 
+COPY --from=development-build \
+  --chown=node:node \
+  /app/node_modules \
+  /app/node_modules
+  
 RUN nub run build
 
 FROM ghcr.io/nubjs/nub:0.7.5
-COPY ./package.json package-lock.json /app/
-COPY --from=production-build /app/node_modules /app/node_modules
-COPY --from=build /app/dist /app/dist
 WORKDIR /app
-CMD [ "nub", "run", "preview" ]
+COPY ./native /app/native
+COPY ./package.json ./nub.lock /app/
+COPY --from=production-build /app/node_modules /app/node_modules
+COPY --from=build /app/.output /app/.output
+CMD [ "nub", "run", "start" ]

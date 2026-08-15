@@ -1,5 +1,5 @@
 {
-  "name": "mex",
+  "name": "colyx",
   "private": true,
   "type": "module",
   "imports": {
@@ -9,7 +9,8 @@
     "dev": "vite dev --host 0.0.0.0 --port 3000",
     "generate-routes": "tsr generate",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "nub .output/server/inde.mjs"
   },
   "dependencies": {
     "@astryxdesign/cli": "^0.3.0",
@@ -25,6 +26,7 @@
     "clsx": "^2.1.1",
     "koffi": "^3.1.4",
     "lucide-react": "^1.31.0",
+    "nitro": "^3.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "sharp": "^0.35.3",
@@ -49,5 +51,10 @@
       "version": "^0.6.0",
       "onFail": "warn"
     }
+  },
+  "allowBuilds": {
+    "@astryxdesign/core": true,
+    "koffi": true,
+    "@astryxdesign/cli": true
   }
 }
