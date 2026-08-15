@@ -24,9 +24,6 @@ const config = defineConfig(({ command }) => {
       tanstackStart(),
       viteReact(),
     ],
-    nitro: {
-      traceDeps: ["koffi", "sharp"]
-    },
   };
 });
 
