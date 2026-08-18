@@ -5,10 +5,14 @@ import {
   CodeBlock,
   Heading,
   HStack,
+  VStack,
+  Button,
   Selector,
 } from "@astryxdesign/core";
 import type { ExtractColorsSuccess } from "@/lib/matugen";
 import { materialYouColors, base16Colors } from "@/data/color";
+import { themeStore } from "#/data/theme";
+import { defaultTheme } from "#/themes/default/ild";
 
 interface ColorTableProps {
   data: Array<ExtractColorsSuccess | null>;
@@ -118,24 +122,36 @@ export default function ColorTable({ data }: ColorTableProps) {
     <>
       <Divider label="Colors Table" />
 
-      <Heading
-        className="self-start"
-        level={2}
-        children={
-          <HStack gap={2} align="center">
-            <span>Active Color: </span>
-            <div
-              className="w-10 h-5 md:w-14 md:h-7 rounded-sm"
-              style={{
-                backgroundColor: sourceColor,
-                // border: "1px solid white",
-              }}
-            />
-            <span>{sourceColor}</span>
-          </HStack>
-        }
-      />
+      <VStack className="w-full" gap={2}>
+        <Heading
+          className="self-start"
+          level={2}
+          children={
+            <HStack gap={2} align="center">
+              <span>Active Color: </span>
+              <div
+                className="w-10 h-5 md:w-14 md:h-7 rounded-sm"
+                style={{
+                  backgroundColor: sourceColor,
+                }}
+              />
+              <span>{sourceColor}</span>
+            </HStack>
+          }
+        />
 
+        <Button
+          className="self-start"
+          label="Change Theme"
+          variant="primary"
+          onClick={() =>
+            themeStore.setState((s) => {
+              const theme = defaultTheme(activePallete?.colors);
+              return activePallete ? { ...s, theme } : { ...s };
+            })
+          }
+        />
+      </VStack>
       <HStack gap={4} className="w-full">
         <Selector
           label="Source colors"

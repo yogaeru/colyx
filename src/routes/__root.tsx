@@ -1,16 +1,14 @@
 import { useSelector } from "@tanstack/react-store";
 import { Theme, useTheme } from "@astryxdesign/core";
-
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 
 import Navbar from "#/components/Navbar";
-
 import { themeStore } from "#/data/theme";
 import { defaultTheme } from "#/themes/default/default";
-import "#/themes/default/default.css";
 
+import "#/themes/default/default.css";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
@@ -24,7 +22,7 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Colyx Home",
       },
     ],
     links: [
@@ -50,7 +48,7 @@ function RootContainer({ children }: { children: React.ReactNode }) {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const themeState = useSelector(themeStore, (s) => s);
-  const theme = themeState.theme ?? defaultTheme;
+  const theme = themeState?.theme ?? defaultTheme;
   const themeMode = themeState.mode ?? "dark";
 
   return (
@@ -59,17 +57,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <Theme
-          theme={theme}
-          mode={themeMode}
-        >
+        <Theme theme={theme} mode={themeMode}>
           <RootContainer>
             <Navbar />
             {children}
           </RootContainer>
         </Theme>
-        
-        
+
         <TanStackDevtools
           config={{
             position: "bottom-right",
