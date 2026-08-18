@@ -21,10 +21,7 @@ export default function Navbar() {
     <TopNav
       id="navbar"
       className={cn("sticky top-0 z-100", "backdrop-blur-lg")}
-
       style={{
-        // backgroundColor: tokens["--color-background-card"],
-        // opacity: 0.9,
         backgroundColor: `color-mix(in srgb, ${tokens["--color-background-card"]} 0%, transparent)`,
       }}
 

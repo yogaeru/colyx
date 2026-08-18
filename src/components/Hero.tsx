@@ -9,7 +9,8 @@ import {
   Button,
 } from "@astryxdesign/core";
 
-import { Palette, SwatchBook, Upload } from "lucide-react";
+import { Palette, SwatchBook, Upload, LucideBuilding2 } from "lucide-react";
+import { cn } from "#/lib/cn";
 
 const MATERIAL_YOU_SAMPLE = [
   { name: "Primary", hex: "#6750A4" },
@@ -49,7 +50,7 @@ function Swatch({ name, hex }: { name: string; hex: string }) {
       role="img"
       title={`${name} · ${hex}`}
       aria-label={`${name} ${hex}`}
-      className="w-6 h-6 md:w-7 md:h-7 rounded-md"
+      className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-md"
       style={{ backgroundColor: hex }}
     />
   );
@@ -76,14 +77,25 @@ export default function Hero({ onStart }: { onStart: () => void }) {
 
   return (
     <section
-      className={`p-10 md:p-15 lg:p-25 sticky z-0 overflow-hidden`}
+      className={cn(
+        "sticky z-0 overflow-hidden",
+        "p-4",
+      )}
       style={{
         top: navBarHeight,
+        // border: "2px solid red"
       }}
     >
-      <VStack gap={6} hAlign="center">
-        <VStack gap={0} hAlign="center">
-          <HStack gap={2}>
+      <VStack
+        gap={2}
+        align="center"
+        width="100%"
+        style={{
+          // border: "2px solid red",
+        }}
+      >
+        <VStack gap={2} align="center" width="100%">
+          <HStack gap={2} wrap="wrap" justify="center">
             <Badge
               label="Material You"
               variant="blue"
@@ -97,9 +109,14 @@ export default function Hero({ onStart }: { onStart: () => void }) {
           </HStack>
 
           <Text
-            as="p"
+            className={cn(
+              "scale-80 md:scale-100",
+              "whitespace-pre-line text-balance",
+              "font-mono",
+            )}
             children={asciiLogo}
-            className="whitespace-pre"
+            as="p"
+            color="accent"
             size="xsm"
           />
 
@@ -108,17 +125,17 @@ export default function Hero({ onStart }: { onStart: () => void }) {
             type="display-2"
             justify="center"
             textWrap="balance"
+            // className="text-center"
           >
             Turn any image into a Material You & base16 color palette
           </Heading>
+
           <Text
             type="body"
             color="secondary"
             justify="center"
             textWrap="balance"
-            display="block"
             className="max-w-2xl"
-            size="base"
           >
             Upload a photo and matugen extracts a full Material You palette and
             a base16 scheme from its dominant colors — in hex, rgb, or hsl.
@@ -131,7 +148,13 @@ export default function Hero({ onStart }: { onStart: () => void }) {
             <Text type="label" color="secondary">
               Material You palette
             </Text>
-            <HStack gap={1.5} hAlign="center" wrap="wrap" width="100%">
+            <HStack
+              gap={1.5}
+              hAlign="center"
+              wrap="wrap"
+              width="100%"
+              justify="center"
+            >
               {MATERIAL_YOU_SAMPLE.map((c) => (
                 <Swatch key={c.name} name={c.name} hex={c.hex} />
               ))}
@@ -139,10 +162,19 @@ export default function Hero({ onStart }: { onStart: () => void }) {
           </VStack>
 
           <VStack gap={1.5} hAlign="center" width="100%">
-            <Text type="label" color="secondary">
-              base16 scheme
-            </Text>
-            <HStack gap={1.5} hAlign="center" wrap="wrap" width="100%">
+            <Badge
+              label="Color Scheme"
+              variant="pink"
+              icon={<LucideBuilding2 size={14} />}
+            />
+
+            <HStack
+              gap={1.5}
+              hAlign="center"
+              wrap="wrap"
+              width="100%"
+              justify="center"
+            >
               {BASE16_SAMPLE.map((c) => (
                 <Swatch key={c.name} name={c.name} hex={c.hex} />
               ))}
@@ -156,6 +188,7 @@ export default function Hero({ onStart }: { onStart: () => void }) {
           size="lg"
           icon={<Upload size={18} />}
           onClick={onStart}
+          className="w-full sm:w-auto"
         />
       </VStack>
     </section>

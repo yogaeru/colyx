@@ -1,5 +1,4 @@
 import { HStack, useTheme } from "@astryxdesign/core";
-import {Heart} from "lucide-react"
 
 const GithubIcon = () => (
   <svg

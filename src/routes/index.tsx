@@ -10,6 +10,7 @@ import {
   Selector,
   Divider,
   useToast,
+  useMediaQuery,
 } from "@astryxdesign/core";
 
 import { cn } from "#/lib/cn";
@@ -33,6 +34,13 @@ import type {
 export const Route = createFileRoute("/")({
   component: Home,
   loader: async () => {},
+  head: () => ({
+    meta: [
+      {
+        title: "Colyx Home",
+      },
+    ],
+  }),
 });
 
 // store
@@ -42,8 +50,9 @@ const formStore = createStore<RequestColorsForm>({
 });
 
 function Home() {
-  const { tokens } = useTheme();
+  const isMobile = useMediaQuery(`(max-width-768px)`, true);
   const toast = useToast();
+  const { tokens } = useTheme();
   const formState = useSelector(formStore, (state) => state);
 
   const [imageValue, setImageValue] = useState<File | File[] | null>(null);
