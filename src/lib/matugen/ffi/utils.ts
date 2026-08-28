@@ -5,10 +5,10 @@
  */
 import { existsSync } from "node:fs";
 import { promisify } from "node:util";
+import path from "node:path";
 import koffi from "koffi";
 
 import { MatugenFfiError } from "../error";
-import path from "node:path";
 
 type LibFn = (request: string) => Promise<string>;
 
@@ -53,31 +53,21 @@ export function loadLib(libPath?: string): Lib {
   // Bind each FFI function and promisify its .async() method.
   // Koffi's .async(args, callback) follows the Node.js error-first callback convention,
   // so util.promisify converts it to (args) => Promise<result>.
-  const extractColorsFn = lib.func(
-    "matugen_extract_colors",
-    MatugenStr,
-    ["char *"],
-  );
-  const getSourceColorsFn = lib.func(
-    "matugen_get_source_colors",
-    MatugenStr,
-    ["char *"],
-  );
-  const renderTemplateFn = lib.func(
-    "matugen_render_template",
-    MatugenStr,
-    ["char *"],
-  );
-  const renderFromImageFn = lib.func(
-    "matugen_render_from_image",
-    MatugenStr,
-    ["char *"],
-  );
-  const writeOutputFn = lib.func(
-    "matugen_write_output",
-    MatugenStr,
-    ["char *"],
-  );
+  const extractColorsFn = lib.func("matugen_extract_colors", MatugenStr, [
+    "char *",
+  ]);
+  const getSourceColorsFn = lib.func("matugen_get_source_colors", MatugenStr, [
+    "char *",
+  ]);
+  const renderTemplateFn = lib.func("matugen_render_template", MatugenStr, [
+    "char *",
+  ]);
+  const renderFromImageFn = lib.func("matugen_render_from_image", MatugenStr, [
+    "char *",
+  ]);
+  const writeOutputFn = lib.func("matugen_write_output", MatugenStr, [
+    "char *",
+  ]);
 
   return {
     matugen_extract_colors: promisify(
@@ -122,7 +112,8 @@ export function resolveLibPath(libPath?: string): string {
 
   const fileName = `matugen.${suffix}`;
   const candidates = [
-    path.resolve(process.cwd(), "native/matugen.so")
+    path.resolve(process.cwd(), "native/libmatugen_ffi.so"),
+    path.resolve(process.cwd(), "native/matugen.so"),
   ];
 
   for (const url of candidates) {
