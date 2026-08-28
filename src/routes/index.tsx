@@ -5,12 +5,11 @@ import { ArrowBigDownDash } from "lucide-react";
 import {
   Button,
   VStack,
-  HStack,
   useTheme,
   Selector,
-  Divider,
+  SegmentedControl,
+  SegmentedControlItem,
   useToast,
-  useMediaQuery,
 } from "@astryxdesign/core";
 
 import { cn } from "#/lib/cn";
@@ -18,6 +17,9 @@ import Hero from "#/components/Hero";
 import ColorTable from "#/components/ui/astryx/ColorTable";
 import AstryxFileInput from "#/components/ui/astryx/FileInput";
 import Footer from "#/components/Footer";
+import Title from "#/components/ui/astryx/Title";
+import RenderTemplate from "#/components/ui/astryx/RenderTemplate";
+
 import { extractColorsFn } from "#/server/extractColors";
 import {
   selectionColorFormat,
@@ -43,17 +45,28 @@ export const Route = createFileRoute("/")({
   }),
 });
 
+interface TabStore {
+  type: "image" | "color";
+  want: "palette" | "template";
+}
+
 // store
 const formStore = createStore<RequestColorsForm>({
   schemeType: "scheme-tonal-spot",
   colorFormat: "hex",
+  app: "css",
+});
+
+const tabStore = createStore<TabStore>({
+  type: "image",
+  want: "palette",
 });
 
 function Home() {
-  const isMobile = useMediaQuery(`(max-width-768px)`, true);
   const toast = useToast();
   const { tokens } = useTheme();
   const formState = useSelector(formStore, (state) => state);
+  const tabState = useSelector(tabStore, (state) => state);
 
   const [imageValue, setImageValue] = useState<File | File[] | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -108,34 +121,43 @@ function Home() {
       <section
         id="content"
         className={cn(
-          "min-h-[50dvh] md:min-h-[60dvh] lg:min-h-[65dvh]",
+          "min-h-[50dvh] md:min-h-[40dvh] lg:min-h-[30dvh]",
           "relative z-1",
-          "py-15 px-5 lg:py-10 lg:px-40",
+          "py-10 px-5 lg:py-10 lg:px-40",
         )}
         style={{
           backgroundColor: tokens["--color-background-muted"],
           borderRadius: "40px 40px 0 0",
         }}
       >
-        <VStack align="center" className="w-full">
+        <VStack gap={10} align="center" className="w-full">
           <VStack
-            gap={6}
+            gap={10}
             align="center"
-            className="w-full md:w-[90%] lg:w-[75%]"
+            className="w-full md:w-[90%] lg:w-[80%]"
           >
-            <AstryxFileInput
-              value={imageValue}
-              onChange={setImageValue}
-              preview={imagePreview}
-              onPreviewChange={setImagePreview}
-            />
+            <VStack gap={4} width="100%">
+              <Title text="SOURCE" />
+              <AstryxFileInput
+                value={imageValue}
+                onChange={setImageValue}
+                preview={imagePreview}
+                onPreviewChange={setImagePreview}
+              />
+            </VStack>
 
             {imageValue && (
               <>
-                <Divider label="Options" />
                 <form onSubmit={handleSubmit} className="w-full">
                   <VStack gap={6} className="w-full">
-                    <HStack gap={4} className="w-full" hAlign="center">
+                    <Title text="EXTRACT OPTIONS" />
+
+                    <div
+                      className={cn(
+                        "w-full gap-2 md:gap-8",
+                        "flex flex-col md:flex-row",
+                      )}
+                    >
                       <Selector
                         width="100%"
                         label="Output Color Format"
@@ -161,7 +183,7 @@ function Home() {
                           }))
                         }
                       />
-                    </HStack>
+                    </div>
 
                     <Button
                       type="submit"
@@ -171,21 +193,44 @@ function Home() {
                       size="lg"
                       icon={<ArrowBigDownDash size={18} />}
                       isDisabled={isSubmit}
+                      isLoading={isSubmit}
                     />
                   </VStack>
                 </form>
               </>
             )}
 
+            {/*Resiult content */}
             {submitData && (
               <VStack gap={6} align="center" className="w-full">
-                <ColorTable data={submitData} />
+                <Title text="RESULT" />
+                <SegmentedControl
+                  value={tabState.want}
+                  onChange={(value) => {
+                    tabStore.setState((s) => ({
+                      ...s,
+                      want: value as "palette" | "template",
+                    }));
+                  }}
+                  label="type"
+                  size="lg"
+                  layout="fill"
+                >
+                  <SegmentedControlItem value="palette" label="Palette" />
+                  <SegmentedControlItem value="template" label="Template" />
+                </SegmentedControl>
+
+                {/*Result section*/}
+                {tabState.want === "palette" ? (
+                  <ColorTable data={submitData} />
+                ) : (
+                  <RenderTemplate image={imageValue} data={submitData} />
+                )}
               </VStack>
             )}
           </VStack>
         </VStack>
       </section>
-
       <Footer />
     </>
   );
