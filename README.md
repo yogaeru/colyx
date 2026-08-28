@@ -5,7 +5,6 @@ A web application for extracting color schemes from images, including **Material
 > **⚠️ Important:** This project uses a modified version of Matugen. The modified Matugen implementation exposes its C ABI and is compiled into a shared library. The resulting native library is loaded from Node.js using Koffi, allowing the application to call Matugen's native functionality directly without spawning the Matugen CLI as a separate process.
 
 ## Features
-
 - Extract color palettes from images
 - Generate **Material You** color schemes
 - Generate **Base16** color schemes
@@ -17,7 +16,6 @@ A web application for extracting color schemes from images, including **Material
 ## Tech Stack
 
 - **[TanStack Start](https://tanstack.com/start)** — Full-stack React framework
-- **[TanStack Router](https://tanstack.com/router)** — File-based routing
 - **[Tailwind CSS](https://tailwindcss.com/)** — Styling
 - **Astryx Components** — UI component library
 - **[Lucide React](https://lucide.dev/guide/packages/lucide-react)** — Icons
