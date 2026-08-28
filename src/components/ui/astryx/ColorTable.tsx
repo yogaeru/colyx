@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   Table,
-  Divider,
   CodeBlock,
   Heading,
   HStack,
@@ -11,8 +10,10 @@ import {
 } from "@astryxdesign/core";
 import type { ExtractColorsSuccess } from "@/lib/matugen";
 import { materialYouColors, base16Colors } from "@/data/color";
+import Title from "./Title";
 import { themeStore } from "#/data/theme";
 import { defaultTheme } from "#/themes/default/ild";
+import { cn } from "#/lib/cn";
 
 interface ColorTableProps {
   data: Array<ExtractColorsSuccess | null>;
@@ -120,7 +121,7 @@ export default function ColorTable({ data }: ColorTableProps) {
 
   return (
     <>
-      <Divider label="Colors Table" />
+      <Title text="COLORS TABLE" />
 
       <VStack className="w-full" gap={2}>
         <Heading
@@ -152,7 +153,8 @@ export default function ColorTable({ data }: ColorTableProps) {
           }
         />
       </VStack>
-      <HStack gap={4} className="w-full">
+
+      <div className={cn("w-full gap-4", "flex flex-col md:flex-row")}>
         <Selector
           label="Source colors"
           value={sourceColor}
@@ -174,31 +176,32 @@ export default function ColorTable({ data }: ColorTableProps) {
             );
           }}
         />
+        <HStack gap={4} width="100%">
+          <Selector
+            label="Type"
+            value={activeTab}
+            onChange={setActiveTab}
+            options={[
+              { value: "colors", label: "Material You" },
+              { value: "base16", label: "Base16" },
+            ]}
+            size="lg"
+            width="100%"
+          />
 
-        <Selector
-          label="Type"
-          value={activeTab}
-          onChange={setActiveTab}
-          options={[
-            { value: "colors", label: "Material You" },
-            { value: "base16", label: "Base16" },
-          ]}
-          size="lg"
-          width="100%"
-        />
-
-        <Selector
-          label="View"
-          value={activeView}
-          onChange={setActiveView}
-          options={[
-            { value: "table", label: "Table" },
-            { value: "code", label: "Code" },
-          ]}
-          size="lg"
-          width="100%"
-        />
-      </HStack>
+          <Selector
+            label="View"
+            value={activeView}
+            onChange={setActiveView}
+            options={[
+              { value: "table", label: "Table" },
+              { value: "code", label: "Code" },
+            ]}
+            size="lg"
+            width="100%"
+          />
+        </HStack>
+      </div>
 
       {/*Code View*/}
       {activeView === "code" && (

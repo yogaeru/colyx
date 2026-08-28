@@ -2,7 +2,6 @@ import { useSelector } from "@tanstack/react-store";
 import {
   TopNav,
   TopNavHeading,
-  TopNavItem,
   Icon,
   NavIcon,
   Button,
@@ -33,12 +32,6 @@ export default function Navbar() {
           logo={<NavIcon icon={<Icon icon={Cuboid} size="sm" />} />}
           headingHref="#"
         />
-      }
-      centerContent={
-        <>
-          <TopNavItem label="HOME" href="/" isSelected />
-          <TopNavItem label="SEE" href="/see" />
-        </>
       }
       endContent={
         <Button

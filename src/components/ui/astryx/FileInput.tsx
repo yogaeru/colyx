@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { FileInput, Divider, VStack } from "@astryxdesign/core";
+import { FileInput, VStack } from "@astryxdesign/core";
 import { cn } from "#/lib/cn";
 
 interface FileInputProps {
@@ -15,6 +15,7 @@ export default function AstryxFileInput({
   preview,
   onPreviewChange,
 }: FileInputProps) {
+  // side effect
   useEffect(() => {
     if (value instanceof File) {
       const url = URL.createObjectURL(value);
@@ -27,7 +28,7 @@ export default function AstryxFileInput({
   return (
     <VStack className={cn("w-full")} gap={4} hAlign="center">
       <FileInput
-        className="h-25 md:h-30 lg:h-40"
+        className="h-25 md:h-30 "
         width="100%"
         label="Upload Image"
         value={null}
@@ -36,22 +37,17 @@ export default function AstryxFileInput({
         accept=".png,.jpg,.jpeg,.webp"
         description="PNG, JPG, or JPEG image, up to 5 MB"
         maxSize={5 * 1024 * 1024}
-       
       />
       {preview && (
         <>
-          <Divider
-            label={(!Array.isArray(value) && value?.name) ?? "Preview"}
-          />
           <img
             src={preview}
             alt="Preview"
-            className="w-40 h-40 object-cover"
+            className="w-full"
             style={{
-              width: "100%",
-              maxHeight: 400,
-              objectFit: "contain",
-              borderRadius: 8,
+              objectFit: "cover",
+              maxHeight: 320,
+              borderRadius: 12,
             }}
           />
         </>

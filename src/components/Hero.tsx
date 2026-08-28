@@ -78,7 +78,7 @@ export default function Hero({ onStart }: { onStart: () => void }) {
   return (
     <section
       className={cn(
-        "sticky z-0 overflow-hidden",
+        "sticky z-0 overflow-hidden h-[75dvh]",
         "p-4",
       )}
       style={{
