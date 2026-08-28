@@ -7,6 +7,7 @@ import type {
 export interface RequestColorsForm {
   schemeType: SchemeType;
   colorFormat: ColorOutputFormat;
+  app: string | null
 }
 
 export const selectionScheme: Array<{ label: string; value: SchemeType }> = [
