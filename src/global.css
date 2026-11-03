@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-rubik: "Rubik Vinyl";
+  --font-cherry: "Cherry Bomb One";
+  --font-one: "Rampart One";
+  --font-sans: "Varela Round", sans-serif;
+  --font-rock: "Rock 3D";
+
+  --color-md-primary: var(--md-sys-color-primary);
+  --color-md-on-primary: var(--md-sys-color-on-primary);
+  --color-md-primary-container: var(--md-sys-color-primary-container);
+  --color-md-on-primary-container: var(--md-sys-color-on-primary-container);
+  --color-md-secondary: var(--md-sys-color-secondary);
+  --color-md-on-secondary: var(--md-sys-color-on-secondary);
+  --color-md-secondary-container: var(--md-sys-color-secondary-container);
+  --color-md-on-secondary-container: var(--md-sys-color-on-secondary-container);
+  --color-md-tertiary: var(--md-sys-color-tertiary);
+  --color-md-on-tertiary: var(--md-sys-color-on-tertiary);
+  --color-md-tertiary-container: var(--md-sys-color-tertiary-container);
+  --color-md-on-tertiary-container: var(--md-sys-color-on-tertiary-container);
+  --color-md-error: var(--md-sys-color-error);
+  --color-md-on-error: var(--md-sys-color-on-error);
+  --color-md-error-container: var(--md-sys-color-error-container);
+  --color-md-on-error-container: var(--md-sys-color-on-error-container);
+  --color-md-background: var(--md-sys-color-background);
+  --color-md-on-background: var(--md-sys-color-on-background);
+  --color-md-surface: var(--md-sys-color-surface);
+  --color-md-on-surface: var(--md-sys-color-on-surface);
+  --color-md-surface-variant: var(--md-sys-color-surface-variant);
+  --color-md-on-surface-variant: var(--md-sys-color-on-surface-variant);
+  --color-md-inverse-surface: var(--md-sys-color-inverse-surface);
+  --color-md-inverse-on-surface: var(--md-sys-color-inverse-on-surface);
+  --color-md-outline: var(--md-sys-color-outline);
+  --color-md-outline-variant: var(--md-sys-color-outline-variant);
+  --color-md-shadow: var(--md-sys-color-shadow);
+  --color-md-scrim: var(--md-sys-color-scrim);
+  --color-md-surface-tint: var(--md-sys-color-surface-tint);
+}
+
+@utility density-0 {
+  --md-sys-density-scale: 0;
+}
+@utility density-2 {
+  --md-sys-density-scale: -1;
+}
+@utility density-2 {
+  --md-sys-density-scale: -2;
+}
+@utility density-3 {
+  --md-sys-density-scale: -3;
+}
+
+@layer components {
+  .center {
+    @apply flex items-center justify-center;
+  }
+
+  .base {
+    @apply w-[95%] sm:w-[90%] md:w-[80%] lg:w-[75%] border-1 border-t-0 border-b-0 border-md-outline-variant;
+  }
+
+  .bg-grid {
+    background-image:
+      radial-gradient(
+        ellipse at 65% 45%,
+        color-mix(
+          in srgb,
+          var(--md-sys-color-primary-container) 46%,
+          transparent
+        ),
+        transparent 55%
+      ),
+      linear-gradient(
+        color-mix(in srgb, var(--md-sys-color-outline-variant) 16%, transparent)
+          1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--md-sys-color-outline-variant) 16%, transparent)
+          1px,
+        transparent 1px
+      );
+    background-size:
+      auto,
+      32px 32px,
+      32px 32px;
+  }
+}
+
+:root {
+  font-family: var(--font-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+section {
+  scroll-margin-top: 80px;
+}
+
+#root,
+.root {
+  isolation: isolate;
+}
