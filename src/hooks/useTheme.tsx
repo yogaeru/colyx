@@ -1,15 +1,15 @@
 import { createContext, useContext, useState, useInsertionEffect } from "react";
-import type { MaterialScheme } from "svaela";
+import type { MaterialSchemeResult, ColorFormatMap} from "svaela";
 
 interface ThemeContextProps {
-  theme: MaterialScheme | null;
-  setTheme: (theme: MaterialScheme | null) => void;
+  theme: MaterialSchemeResult<keyof ColorFormatMap> | null;
+  setTheme: (theme: MaterialSchemeResult<keyof ColorFormatMap> | null) => void;
 }
 
 const ThemeContext = createContext<ThemeContextProps | null>(null);
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<MaterialScheme | null>(null);
+  const [theme, setTheme] = useState<MaterialSchemeResult<keyof ColorFormatMap> | null>(null);
 
   useInsertionEffect(() => {
     if (theme) {
