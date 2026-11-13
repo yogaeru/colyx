@@ -7,10 +7,10 @@ import { OptionsProvider } from "./hooks/useOptions.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider>
-      <OptionsProvider>
+    <OptionsProvider>
+      <ThemeProvider>
         <App />
-      </OptionsProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </OptionsProvider>
   </StrictMode>,
 );
