@@ -17,7 +17,7 @@ type SelectorItems<T> = {
 interface SelectorProps<T> {
   items: readonly SelectorItems<T>[];
   defaultValue?: T;
-  onChange?: (value: T) => void;
+  onChange?: (value: T | null) => void;
 }
 
 export function Selector<T = string>({
