@@ -1,32 +1,50 @@
-# React + TypeScript + Vite
+# Colyx
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A fast, client-side web application for extracting color schemes from images, including **Material You** color palettes.
 
-Currently, two official plugins are available:
+> **⚡ Client-Side Architecture:** Colyx now runs entirely in the browser using **React + Vite** and **Svaela**—a lightweight wrapper built on top of `colorthief` and `@material/material-color-utilities`. By removing native C ABI bindings and server-side processing, color extraction and palette generation happen instantaneously on the client.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Fast, client-side color palette extraction directly in the browser
+- Generate **Material You** color schemes
+- Preview extracted colors and generated palettes in real time
+- Switch between multiple source colors extracted from an image
+- View and copy generated color data as structured JSON
+- Clean, responsive UI
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the Oxlint configuration
+- **[React](https://react.dev/) + [Vite](https://vite.dev/)** — Client-side application framework and build tool
+- **[Tailwind CSS](https://tailwindcss.com/)** — Utility-first styling
+- **[shadcn/ui](https://ui.shadcn.com/)** — Accessible and customizable UI components
+- **[Lucide React](https://lucide.dev/guide/packages/lucide-react)** — Icons
+- **[Svaela](https://github.com/yogaeru/svaela)** — Color extraction and palette generation wrapper powered by **[ColorThief](https://lokeshdhakar.com/projects/color-thief/)** and **[Material Color Utilities](https://github.com/material-foundation/material-color-utilities)**
+- **[Node.js](https://nodejs.org/)** — Development environment and tooling
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Getting Started
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### Prerequisites
+
+Make sure you have **Node.js** installed along with your preferred package manager (`npm`, `pnpm`, `yarn`, or `bun`).
+
+Clone the repository and install the dependencies:
+
+```bash
+pnpm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Running the Development Server
+
+```bash
+pnpm dev
+```
+
+Building for Production
+
+```bash
+pnpm build
+```
+
+## License
+MIT license, do whatever you want.
