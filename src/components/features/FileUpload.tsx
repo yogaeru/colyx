@@ -61,6 +61,7 @@ function FileUpload({
       >
         {previewUrl ? (
           <img
+            key={previewUrl}
             ref={imageRef}
             src={previewUrl}
             alt="Image preview"
