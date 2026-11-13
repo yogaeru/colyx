@@ -1,53 +1,27 @@
-import { useState, useEffect, useRef } from "react";
-import { createMaterialSchemesFromImage } from "svaela";
+import { useCallback, useState, useEffect } from "react";
 import { PaletteIcon, PaintRollerIcon, UploadIcon } from "lucide-react";
+import {
+  formatColor,
+  createMaterialSchemesFromImage,
+  type ColorFormatMap,
+  type MaterialSchemeResult,
+} from "svaela";
 
 import { Button } from "./components/ui/button";
 import { Badge } from "./components/ui/badge";
 import { Separator } from "./components/ui/separator";
 import { Selector } from "./components/ui/Selector";
-import { useTheme } from "@/lib/useTheme";
-import { useOptions } from "@/lib/useOptions";
 import { ColorSwatch } from "./components/ui/ColorSwatch";
-
-import selectOptions from "@/lib/options";
-import { downscale } from "@/lib/downscale";
+import { FileUpload } from "./components/features/FileUpload";
 
 import { cn } from "@/lib/utils";
+import selectOptions from "@/lib/options";
+import { useTheme } from "@/hooks/useTheme";
+import { downscale } from "@/lib/downscale";
+import { useOptions } from "@/hooks/useOptions";
+import { materialYouColors } from "@/lib/colors";
 
-import type {
-  MaterialSchemeResult,
-  ColorFormatMap,
-} from "svaela";
-
-export default function App() {
-  const { theme } = useTheme();
-  const { options, setOptions } = useOptions();
-  const imageRef = useRef<HTMLImageElement>(null);
-
-  const [result, setResult] = useState<
-    MaterialSchemeResult<keyof ColorFormatMap>[] | null
-  >(null);
-
-  const handleOptionsChange = async () => {
-    const img = downscale(imageRef.current!);
-    const colors = await createMaterialSchemesFromImage(img, {
-      contrastLevel: options.contrastLevel,
-      scheme: options.schemeVariant,
-      format: options.colorOutput,
-      extractionMode: options.extractionMode,
-    });
-    // console.log(colors);
-    setResult(colors);
-  };
-
-  useEffect(() => {
-    if (imageRef.current) {
-      handleOptionsChange();
-    }
-  }, [options]);
-
-  const ascii = `
+const TEXT_ASCII = `
 ░█████╗░░█████╗░██╗░░░░░██╗░░░██╗██╗░░██╗
 ██╔══██╗██╔══██╗██║░░░░░╚██╗░██╔╝╚██╗██╔╝
 ██║░░╚═╝██║░░██║██║░░░░░░╚████╔╝░░╚███╔╝░
@@ -56,8 +30,71 @@ export default function App() {
 ░╚════╝░░╚════╝░╚══════╝░░░╚═╝░░░╚═╝░░╚═╝
 `;
 
+export default function App() {
+  const { setTheme } = useTheme();
+  const { options, setOptions } = useOptions();
+
+  const [activeSchemeIndex, setActiveSchemeIndex] = useState<number>(0);
+  const [imageElement, setImageElement] = useState<HTMLImageElement | null>(
+    null,
+  );
+  const [result, setResult] = useState<
+    MaterialSchemeResult<keyof ColorFormatMap>[] | []
+  >([]);
+
+  /** Handle for image changes */
+  const handleImageRefChange = useCallback((img: HTMLImageElement | null) => {
+    console.log("Image Ref Changed");
+    setImageElement(img);
+  }, []);
+
+  useEffect(() => {
+    if (!imageElement) return;
+
+    let cancelled = false;
+
+    const generateColors = async () => {
+      try {
+        const img = downscale(imageElement);
+        const colors = await createMaterialSchemesFromImage(img, {
+          contrastLevel: options.contrastLevel,
+          scheme: options.schemeVariant,
+          format: options.colorOutput,
+          extractionMode: options.extractionMode,
+        });
+
+        if (!cancelled) {
+          setResult(colors);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.error("Failed to generate schemes:", error);
+        }
+      }
+    };
+
+    const handleImageLoad = () => {
+      console.log("Image Loaded");
+      setResult([]);
+      generateColors();
+    };
+
+    if (imageElement.complete && imageElement.naturalWidth > 0) {
+      generateColors();
+    } else {
+      console.log("Attach load event listener to image");
+      setResult([]);
+      imageElement.addEventListener("load", handleImageLoad);
+    }
+
+    return () => {
+      cancelled = true;
+      imageElement.removeEventListener("load", handleImageLoad);
+    };
+  }, [imageElement, options]);
+
   return (
-    <div>
+    <>
       <main>
         {/*Hero Section*/}
         <section id="hero" className="bg-grid sticky top-0 z-1">
@@ -79,7 +116,7 @@ export default function App() {
                 </Badge>
               </div>
 
-              <pre className="whitespace-pre text-xs">{ascii}</pre>
+              <pre className="whitespace-pre text-xs">{TEXT_ASCII}</pre>
               <h1>Turn Any Image Into Material You Palette</h1>
               <pre className="max-w-[60ch] text-balance mt-3 text-foreground ">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
@@ -91,7 +128,7 @@ export default function App() {
               <Button
                 className="px-5 mt-5 w-fit"
                 onClick={() => {
-                  document.getElementById("content").scrollIntoView({
+                  document.getElementById("content")?.scrollIntoView({
                     behavior: "smooth",
                     block: "start",
                   });
@@ -121,15 +158,8 @@ export default function App() {
                 <Separator className="border-t-2 w-full" />
               </div>
 
-              <div className="w-full h-40 border">
-                <img
-                  ref={imageRef}
-                  src="/1.png"
-                  alt="image example"
-                  className="w-full h-full object-cover"
-                />
-                {/*Placeholder for image file upload*/}
-              </div>
+              {/* File Upload */}
+              <FileUpload imageRef={handleImageRefChange} />
             </div>
 
             {/*Generator Settings*/}
@@ -148,6 +178,7 @@ export default function App() {
                     <Selector<(typeof items)[number]["value"]>
                       items={items}
                       onChange={(value) => {
+                        setResult([]);
                         setOptions((prev) => ({
                           ...prev,
                           [key]: value,
@@ -160,35 +191,90 @@ export default function App() {
             </div>
 
             {/* Result*/}
-
-            <div className="flex flex-col gap-2">
+            <div id="result" className="flex flex-col gap-2">
               <div className="flex w-full items-center gap-5 overflow-hidden">
                 <span className="text-lg font-bold">Result</span>
                 <Separator className="border-t-2 w-full" />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 bg-background rounded-xl p-3 border">
-                {Object.entries(result?.[0]?.colors ?? {}).map(
-                  ([key, color], index) => (
-                    <ColorSwatch
+              {/* Container Extracted Source Color */}
+              <div className="grid grid-cols-5 gap-5">
+                {result.map((scheme, index) => {
+                  const activeId = result[activeSchemeIndex]?.id;
+                  return (
+                    <div
                       key={index}
-                      color={color.light as string}
-                      title={"Color Title"}
-                      subtitle={"Color"}
-                    />
-                  ),
-                )}
+                      className={cn(
+                        "rounded-lg cursor-pointer hover:bg-muted/50 transition-colors",
+                        activeId === scheme.id ? "border-2 border-primary" : "",
+                      )}
+                      onClick={() => setActiveSchemeIndex(index)}
+                    >
+                      <ColorSwatch
+                        title={scheme.name}
+                        color={formatColor(
+                          scheme.sourceColor,
+                          options.colorOutput,
+                        )}
+                      />
+                    </div>
+                  );
+                })}
               </div>
 
-              {/*<div className="w-full min-h-40 border p-5 overflow-scroll rounded-lg bg-background">
-                <pre>{JSON.stringify(result?.[0], null, 2)}</pre>
-              </div>*/}
+              {/* Color Swatch Container */}
+              <div className="flex flex-col gap-3 bg-background rounded-xl p-3 border">
+                {result.length > 0 &&
+                  Object.entries(materialYouColors).map(
+                    ([category, colors]) => (
+                      // Color Swatch Category
+                      <div key={category} className="flex flex-col gap-3">
+                        <span className="text-sm font-bold">{category}</span>
+                        {/* Color Swatch Grid per Category */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                          {Object.entries(colors).map(([token, desc]) => {
+                            //  Get Color
+                            let formattedColor: string;
+                            const color = result[activeSchemeIndex]?.colors;
+                            const selectedColor =
+                              color?.[token as keyof typeof color]?.dark;
+
+                            if (!selectedColor) {
+                              return null;
+                            }
+                            try {
+                              formattedColor = formatColor(
+                                selectedColor,
+                                options.colorOutput,
+                              );
+                            } catch (e) {
+                              console.log(e);
+                            }
+
+                            return (
+                              <ColorSwatch
+                                key={token}
+                                color={formattedColor}
+                                title={token}
+                                subtitle={desc}
+                              />
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ),
+                  )}
+              </div>
             </div>
           </div>
         </section>
       </main>
 
-      <footer></footer>
-    </div>
+      <footer className="p-2 bg-card">
+        <div className="flex justify-center gap-2">
+          <span>Made by yogaeru with ❣️</span>
+        </div>
+      </footer>
+    </>
   );
 }
