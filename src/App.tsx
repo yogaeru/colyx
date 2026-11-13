@@ -11,6 +11,7 @@ import { Button } from "./components/ui/button";
 import { Badge } from "./components/ui/badge";
 import { Separator } from "./components/ui/separator";
 import { Selector } from "./components/ui/Selector";
+import { Slider } from "./components/ui/slider";
 import { ColorSwatch } from "./components/ui/ColorSwatch";
 import { FileUpload } from "./components/features/FileUpload";
 
@@ -60,13 +61,16 @@ export default function App() {
 
     const generateColors = async () => {
       try {
+        console.time("Generate Time");
         const img = downscale(imageElement);
         const colors = await createMaterialSchemesFromImage(img, {
           contrastLevel: options.contrastLevel,
           scheme: options.schemeVariant,
           format: options.colorOutput,
           extractionMode: options.extractionMode,
+          paletteSize: options.paletteSize,
         });
+        console.timeEnd("Generate Time");
 
         if (!cancelled) {
           if (colors.length < activeSchemeIndex) setActiveSchemeIndex(0);
@@ -155,14 +159,13 @@ export default function App() {
                 Upload an Image
               </Button>
             </div>
-
           </div>
         </section>
 
         {/* ---- Content Section ---- */}
         <section
           id="content"
-          className="relative z-10 bg-card margin scroll-mt-20 rounded-t-[2rem]"
+          className="relative z-10 bg-background margin scroll-mt-20 rounded-t-[2rem]"
         >
           <div
             className={cn(
@@ -210,45 +213,75 @@ export default function App() {
                     />
                   </div>
                 ))}
+
+                {/* Slider For How Many Palette source color generate*/}
+                {options.extractionMode === "palette" && (
+                  <div className="flex flex-col gap-2">
+                    <span className="text-lg font-bold">
+                      Palette Size - {options.paletteSize}
+                    </span>
+
+                    <Slider
+                      min={2}
+                      max={10}
+                      step={1}
+                      value={[options.paletteSize]}
+                      onValueChange={(value) => {
+                        const paletteSize = Array.isArray(value)
+                          ? value[0]
+                          : value;
+
+                        setOptions((prev) => ({
+                          ...prev,
+                          paletteSize,
+                        }));
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Result*/}
-            <div id="result" className="flex flex-col gap-2 ">
-              <div className="flex w-full items-center gap-5 overflow-hidden">
-                <span className="text-lg font-bold">Result</span>
-                <Separator className="border-t-2 w-full" />
-              </div>
+            {/*
+              Result ---
+            */}
+            {result.length > 0 && imageElement ? (
+              <div id="result" className="flex flex-col gap-2 ">
+                <div className="flex w-full items-center gap-5 overflow-hidden">
+                  <span className="text-lg font-bold">Result</span>
+                  <Separator className="border-t-2 w-full" />
+                </div>
 
-              {/* Container Extracted Source Color */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-                {result.map((scheme, index) => {
-                  const activeId = result[activeSchemeIndex]?.id;
-                  return (
-                    <div
-                      key={index}
-                      className={cn(
-                        "rounded-lg cursor-pointer hover:bg-muted/50 transition-colors",
-                        activeId === scheme.id ? "border-2 border-primary" : "",
-                      )}
-                      onClick={() => setActiveSchemeIndex(index)}
-                    >
-                      <ColorSwatch
-                        title={scheme.name}
-                        color={formatColor(
-                          scheme.sourceColor,
-                          options.colorOutput,
+                {/* Container Extracted Source Color */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+                  {result.map((scheme, index) => {
+                    const activeId = result[activeSchemeIndex]?.id;
+                    return (
+                      <div
+                        key={index}
+                        className={cn(
+                          "rounded-lg cursor-pointer hover:bg-muted/50 transition-colors",
+                          activeId === scheme.id
+                            ? "border-2 border-primary"
+                            : "",
                         )}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+                        onClick={() => setActiveSchemeIndex(index)}
+                      >
+                        <ColorSwatch
+                          title={scheme.name}
+                          color={formatColor(
+                            scheme.sourceColor,
+                            options.colorOutput,
+                          )}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
 
-              {/* Color Swatch Container */}
-              <div className="flex flex-col gap-3 bg-popover rounded-xl p-3">
-                {result.length > 0 &&
-                  Object.entries(materialYouColors).map(
+                {/* Color Swatch Container */}
+                <div className="flex flex-col gap-3 bg-popover rounded-xl p-3">
+                  {Object.entries(materialYouColors).map(
                     ([category, colors]) => (
                       // Color Swatch Category
                       <div key={category} className="flex flex-col gap-3">
@@ -287,8 +320,24 @@ export default function App() {
                       </div>
                     ),
                   )}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex min-h-50 flex-col items-center justify-center gap-4 rounded-2xl border border-dashed bg-muted/20 p-6 text-center">
+                <div className="flex size-14 items-center justify-center rounded-2xl border bg-background text-muted-foreground">
+                  <PaletteIcon aria-hidden="true" className="size-6" />
+                </div>
+                <div className="space-y-2">
+                  <h2 className="text-lg font-semibold">
+                    Your palette starts here
+                  </h2>
+                  <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+                    Upload an image above to discover its colors and generate
+                    your Material You palette.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </main>

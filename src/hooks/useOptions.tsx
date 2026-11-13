@@ -10,6 +10,7 @@ interface OptionsProps {
   extractionMode: ColorExtractionMode;
   colorOutput: ColorFormat;
   contrastLevel: number;
+  paletteSize: number;
 }
 
 interface OptionsContextProps {
@@ -25,6 +26,7 @@ function OptionsProvider({ children }: { children: React.ReactNode }) {
     contrastLevel: 0,
     extractionMode: "dominant",
     schemeVariant: "content",
+    paletteSize: 3,
   });
 
   return (
