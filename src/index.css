@@ -121,6 +121,9 @@
   * {
     @apply border-border outline-ring/50;
     font-family: var(--font-sans);
+    transition:
+      background-color ease-in-out 500ms,
+      color ease-in-out 500ms;
   }
   body {
     @apply bg-background text-foreground;
