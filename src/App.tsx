@@ -16,7 +16,6 @@ import { FileUpload } from "./components/features/FileUpload";
 
 import { cn } from "@/lib/utils";
 import selectOptions from "@/lib/options";
-import { useTheme } from "@/hooks/useTheme";
 import { downscale } from "@/lib/downscale";
 import { useOptions } from "@/hooks/useOptions";
 import { materialYouColors } from "@/lib/colors";
@@ -31,7 +30,6 @@ const TEXT_ASCII = `
 `;
 
 export default function App() {
-  const { setTheme } = useTheme();
   const { options, setOptions } = useOptions();
 
   const [activeSchemeIndex, setActiveSchemeIndex] = useState<number>(0);
@@ -87,6 +85,7 @@ export default function App() {
       imageElement.addEventListener("load", handleImageLoad);
     }
 
+    // Cleanup event
     return () => {
       cancelled = true;
       imageElement.removeEventListener("load", handleImageLoad);
@@ -175,9 +174,11 @@ export default function App() {
                     <span className="text-sm font-medium">
                       Select an options
                     </span>
+
                     <Selector<(typeof items)[number]["value"]>
                       items={items}
                       onChange={(value) => {
+                        if (!value) return;
                         setResult([]);
                         setOptions((prev) => ({
                           ...prev,
@@ -234,7 +235,7 @@ export default function App() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                           {Object.entries(colors).map(([token, desc]) => {
                             //  Get Color
-                            let formattedColor: string;
+                            let formattedColor: string = "";
                             const color = result[activeSchemeIndex]?.colors;
                             const selectedColor =
                               color?.[token as keyof typeof color]?.dark;
