@@ -15,12 +15,14 @@ type SelectorItems<T> = {
 };
 
 interface SelectorProps<T> {
+  label?: string
   items: readonly SelectorItems<T>[];
   defaultValue?: T;
   onChange?: (value: T | null) => void;
 }
 
 export function Selector<T = string>({
+  label,
   items,
   defaultValue,
   onChange,
@@ -36,7 +38,7 @@ export function Selector<T = string>({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
+          {label && <SelectLabel>{label}</SelectLabel>}
           {items.map((item, index) => (
             <SelectItem key={index} value={item.value}>
               <div className="flex flex-col">
