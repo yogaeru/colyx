@@ -1,5 +1,3 @@
-import type { MaterialSchemeVariant } from "svaela";
-
 const colorOutputOptions = [
   {
     label: "HEX",
