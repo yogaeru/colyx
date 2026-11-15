@@ -29,11 +29,10 @@ export function ColorSwatch({ title, subtitle, color }: ColorSwatchProps) {
       <div className="w-full border-t border-border" />
 
       {/* footer */}
-      <div className="flex flex-col gap-1 px-2 py-1.5 min-w-0">
+      <div className="flex flex-col flex-start gap-1 px-2 py-1.5 min-w-0">
         {title && (
           <span
-            title={title}
-            className="truncate text-xs font-bold leading-tight text-foreground"
+            className="truncate text-xs font-bold leading-tight text-foreground text-start"
           >
             {title}
           </span>
@@ -50,7 +49,7 @@ export function ColorSwatch({ title, subtitle, color }: ColorSwatchProps) {
 
         {/*<div className="w-full border-t border-border" />*/}
         <div className="flex items-center justify-between gap-1">
-          <span className="text-xs font-semibold uppercase leading-tight tracking-wide text-muted-foreground tabular-nums">
+          <span className="text-xs font-semibold leading-tight tracking-wide text-muted-foreground tabular-nums">
             {color}
           </span>
           <button
