@@ -1,11 +1,19 @@
+import type { LucideIcon } from "lucide-react";
+
 import {
   ToggleGroup as ToggleGroupPrimitve,
   ToggleGroupItem,
 } from "../ui/toggle-group";
 
+interface ToggleGroupValue {
+  label: string;
+  value: string;
+  icon?: LucideIcon;
+}
+
 interface ToggleGroupProps {
   variant?: "default" | "outline";
-  item: string[];
+  items: ToggleGroupValue[];
   onChange?: (value: string[]) => void;
   multiple?: boolean;
   value?: string[];
@@ -14,29 +22,29 @@ interface ToggleGroupProps {
 
 function ToggleGroup({
   variant = "default",
-  item,
+  items,
   onChange,
   multiple = false,
   defaultValue,
   value,
 }: ToggleGroupProps) {
   return (
-    <div className="bg-card w-fit rounded-full">
+    <div className="bg-card w-fit rounded-full border-2 border-border p-1">
       <ToggleGroupPrimitve
         variant={variant}
         value={value}
         onValueChange={onChange}
         multiple={multiple}
-
         defaultValue={defaultValue}
       >
-        {item.map((value) => (
+        {items.map(({ label, value, icon: Icon }) => (
           <ToggleGroupItem
-            key={value}
+            key={label}
             value={value}
-            aria-label={`Toggle ${value}`}
+            aria-label={`Toggle ${label}`}
           >
-            {value}
+            {Icon && <Icon size={12} />}
+            {label}
           </ToggleGroupItem>
         ))}
       </ToggleGroupPrimitve>
