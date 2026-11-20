@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import type {
   ColorExtractionMode,
   ColorFormat,
@@ -11,6 +11,7 @@ interface OptionsProps {
   colorOutput: ColorFormat;
   contrastLevel: number;
   paletteSize: number;
+  theme: "light" | "dark";
 }
 
 interface OptionsContextProps {
@@ -27,7 +28,15 @@ function OptionsProvider({ children }: { children: React.ReactNode }) {
     extractionMode: "dominant",
     schemeVariant: "content",
     paletteSize: 3,
+    theme: "dark",
   });
+
+  useEffect(() => {
+    document.documentElement.classList.remove("dark");
+    if (options.theme === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  }, [options.theme]);
 
   return (
     <OptionsContext.Provider value={{ options, setOptions }}>
