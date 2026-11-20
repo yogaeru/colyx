@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Copy, CheckCheck } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ColorSwatchProps {
   title?: string;
   subtitle?: string;
   color: string;
+  className?: string;
 }
 
-export function ColorSwatch({ title, subtitle, color }: ColorSwatchProps) {
+export function ColorSwatch({
+  className,
+  title,
+  subtitle,
+  color,
+}: ColorSwatchProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -19,7 +26,12 @@ export function ColorSwatch({ title, subtitle, color }: ColorSwatchProps) {
   };
 
   return (
-    <div className="flex flex-col border-2 overflow-hidden rounded-lg">
+    <div
+      className={cn(
+        "flex flex-col border-2 overflow-hidden rounded-lg",
+        className,
+      )}
+    >
       {/* color swatch */}
       <div
         style={{ backgroundColor: color }}
@@ -31,9 +43,7 @@ export function ColorSwatch({ title, subtitle, color }: ColorSwatchProps) {
       {/* footer */}
       <div className="flex flex-col flex-start gap-1 px-2 py-1.5 min-w-0">
         {title && (
-          <span
-            className="truncate text-xs font-bold leading-tight text-foreground text-start"
-          >
+          <span className="truncate text-xs font-bold leading-tight text-foreground text-start">
             {title}
           </span>
         )}
