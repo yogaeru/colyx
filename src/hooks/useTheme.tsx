@@ -10,6 +10,15 @@ import { useOptions } from "./useOptions";
 type ShadcnToMaterial = {
   [key: string]: MaterialRole;
 };
+type Palette = MaterialSchemeResult<keyof ColorFormatMap>;
+
+interface ThemeContextProps {
+  generatedPalettes: Palette[];
+  setGeneratedPalettes: (palettes: Palette[] | []) => void;
+  
+  theme: Palette | null;
+  setTheme: (theme: Palette | null) => void;
+}
 
 const shadcnToMaterialToken: ShadcnToMaterial = {
   background: "background",
@@ -18,7 +27,7 @@ const shadcnToMaterialToken: ShadcnToMaterial = {
   card: "surface_container_low",
   "card-foreground": "on_surface",
 
-  popover: "surface_container",
+  popover: "surface_container_high",
   "popover-foreground": "on_surface",
 
   primary: "primary",
@@ -27,18 +36,18 @@ const shadcnToMaterialToken: ShadcnToMaterial = {
   secondary: "secondary_container",
   "secondary-foreground": "on_secondary_container",
 
-  muted: "surface_container_low",
+  muted: "surface_container_highest",
   "muted-foreground": "on_surface_variant",
 
-  accent: "tertiary_container",
-  "accent-foreground": "on_tertiary_container",
+  accent: "surface_container_highest",
+  "accent-foreground": "on_surface",
 
   destructive: "error",
   "destructive-foreground": "on_error",
 
-  border: "outline_variant",
-  input: "outline",
-  ring: "secondary",
+  border: "outline",
+  input: "outline_variant",
+  ring: "primary",
 
   "chart-1": "primary",
   "chart-2": "secondary",
@@ -46,28 +55,32 @@ const shadcnToMaterialToken: ShadcnToMaterial = {
   "chart-4": "primary_container",
   "chart-5": "tertiary_container",
 
-  sidebar: "surface_container_low",
+  sidebar: "surface_container_lowest",
   "sidebar-foreground": "on_surface",
   "sidebar-primary": "primary",
   "sidebar-primary-foreground": "on_primary",
-  "sidebar-accent": "secondary_container",
-  "sidebar-accent-foreground": "on_secondary_container",
+  "sidebar-accent": "surface_container_high",
+  "sidebar-accent-foreground": "on_surface",
   "sidebar-border": "outline_variant",
   "sidebar-ring": "secondary",
 };
-
-interface ThemeContextProps {
-  theme: MaterialSchemeResult<keyof ColorFormatMap> | null;
-  setTheme: (theme: MaterialSchemeResult<keyof ColorFormatMap> | null) => void;
-}
 
 const ThemeContext = createContext<ThemeContextProps | null>(null);
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   const { options } = useOptions();
-  const [theme, setTheme] = useState<MaterialSchemeResult<
-    keyof ColorFormatMap
-  > | null>(null);
+
+  const [theme, setTheme] = useState<Palette | null>(null);
+  const [generatedPalettes, setGeneratedPalettes] = useState<Palette[] | []>(
+    [],
+  );
+
+  const contextValue = {
+    theme,
+    setTheme,
+    generatedPalettes,
+    setGeneratedPalettes,
+  };
 
   useInsertionEffect(() => {
     if (theme) {
@@ -91,7 +104,7 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
@@ -106,3 +119,4 @@ function useTheme() {
 }
 
 export { ThemeProvider, useTheme };
+export type { Palette };
