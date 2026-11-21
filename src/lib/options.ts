@@ -134,4 +134,4 @@ const selectOptions = {
   },
 };
 
-export default selectOptions;
+export { selectOptions };
