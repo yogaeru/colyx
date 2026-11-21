@@ -3,6 +3,7 @@ import { formatColor } from "svaela";
 import type { MaterialSchemeResult, ColorFormatMap } from "svaela";
 
 import { cn } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 import { useOptions } from "@/hooks/useOptions";
 import { materialYouColors } from "@/lib/colors";
 
@@ -57,7 +58,7 @@ export function ColorGrid({
           items={toggleItems}
           value={[options.theme]}
           onChange={(value) => {
-            console.log("Theme Toggle Changed", value);
+            logger("Theme Toggle Changed", value);
             if (value.length === 0) return;
             setOptions((prev) => ({
               ...prev,

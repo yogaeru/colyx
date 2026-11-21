@@ -10,6 +10,7 @@ import { FileUpload } from "../shared/FileUpload";
 import { useTheme } from "@/hooks/useTheme";
 import { useOptions } from "@/hooks/useOptions";
 import { cn } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 import { downscale } from "@/lib/downscale";
 
 export function PaletteConfig() {
@@ -23,7 +24,7 @@ export function PaletteConfig() {
   );
 
   const handleImageRefChange = useCallback((img: HTMLImageElement | null) => {
-    console.log("Image Ref Changed");
+    logger("Image Ref Changed");
     setImageElement(img);
   }, []);
 
@@ -37,7 +38,6 @@ export function PaletteConfig() {
 
     const generateColors = () => {
       try {
-        console.time("Generate Time");
         const img = downscale(imageElement);
         const colors = createMaterialSchemesFromImageSync(img, {
           contrastLevel: options.contrastLevel,
@@ -46,18 +46,17 @@ export function PaletteConfig() {
           extractionMode: options.extractionMode,
           paletteSize: options.paletteSize,
         });
-        console.timeEnd("Generate Time");
 
         if (colors.length < activeSchemeIndex) setActiveSchemeIndex(0);
         setGeneratedPalettes(colors);
-        console.log("colors", colors);
+        logger("colors", colors);
       } catch (error) {
         console.error("Failed to generate schemes:", error);
       }
     };
 
     const handleImageLoad = () => {
-      console.log("Image Loaded");
+      logger("Image Loaded");
       setGeneratedPalettes([]);
       generateColors();
     };
@@ -65,7 +64,7 @@ export function PaletteConfig() {
     if (imageElement.complete && imageElement.naturalWidth > 0) {
       generateColors();
     } else {
-      console.log("Attach load event listener to image");
+      logger("Attach load event listener to image");
       setGeneratedPalettes([]);
       imageElement.addEventListener("load", handleImageLoad);
     }
