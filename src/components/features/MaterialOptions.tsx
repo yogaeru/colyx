@@ -24,10 +24,12 @@ export function MaterialOptions({ onSelectChange }: MaterialOptionsProps) {
           <div key={index} className="flex flex-col gap-1.5">
             <span className="text-sm font-medium">{items.label}</span>
 
-            <Selector<(typeof items.options)[number]["value"]>
+            <Selector<((typeof items.options)[number]["value"])>
               label={items.label}
               items={items.options}
-              onChange={(value) => onSelectChange(value, key)}
+              onChange={(value) => {
+                if (value) onSelectChange(value, key);
+              }}
             />
           </div>
         ))}
