@@ -1,3 +1,3 @@
 export function logger(...args: any[]) {
-  // console.log(...args);
+  if (import.meta.env.DEV) console.log(...args);
 }
