@@ -34,7 +34,7 @@ importers:
         version: 4.23.0
       svaela:
         specifier: github:yogaeru/svaela#main
-        version: https://codeload.github.com/yogaeru/svaela/tar.gz/b01b1bcee7ecfcdac85f4c82492db4487cc45ce0
+        version: https://codeload.github.com/yogaeru/svaela/tar.gz/2584d60cdc1130703cc1c99e741464ef71b843ca
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
@@ -1569,8 +1569,8 @@ packages:
     resolution: {integrity: sha512-aulFJcD6YK8V1G7iRB5tigAP4TsHBZZrOV8pjV++zdUwmeV8uzbY7yn6h9MswN62adStNZFuCIx4haBnRuMDaw==}
     engines: {node: '>=18'}
 
-  svaela@https://codeload.github.com/yogaeru/svaela/tar.gz/b01b1bcee7ecfcdac85f4c82492db4487cc45ce0:
-    resolution: {gitHosted: true, integrity: sha512-GJ7/ngUrQPToPXQANjtRHGRVwiR0Othfo1XHSJVhmt6hidzKC8PFYBQyq79aC6LYFytoH5bg7hIzbF7sqGfPKg==, tarball: https://codeload.github.com/yogaeru/svaela/tar.gz/b01b1bcee7ecfcdac85f4c82492db4487cc45ce0}
+  svaela@https://codeload.github.com/yogaeru/svaela/tar.gz/2584d60cdc1130703cc1c99e741464ef71b843ca:
+    resolution: {gitHosted: true, integrity: sha512-70td5ywnD0Jl1uCBKytYson8//3Hy277TGH5c+CquGNr9qGI/td1Q9SPd6c99KkChpdO9aqAbvwE09EeBkVMgw==, tarball: https://codeload.github.com/yogaeru/svaela/tar.gz/2584d60cdc1130703cc1c99e741464ef71b843ca}
     version: 0.1.0
     peerDependencies:
       sharp: ^0.35.5
@@ -3001,7 +3001,7 @@ snapshots:
 
   strip-final-newline@4.0.0: {}
 
-  svaela@https://codeload.github.com/yogaeru/svaela/tar.gz/b01b1bcee7ecfcdac85f4c82492db4487cc45ce0:
+  svaela@https://codeload.github.com/yogaeru/svaela/tar.gz/2584d60cdc1130703cc1c99e741464ef71b843ca:
     dependencies:
       '@material/material-color-utilities': 0.4.0
       colorthief: 3.5.0
