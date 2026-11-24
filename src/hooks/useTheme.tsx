@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useInsertionEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useInsertionEffect,
+  useMemo,
+} from "react";
 import { formatColor } from "svaela";
 import type {
   MaterialSchemeResult,
@@ -14,8 +20,8 @@ type Palette = MaterialSchemeResult<keyof ColorFormatMap>;
 
 interface ThemeContextProps {
   generatedPalettes: Palette[];
-  setGeneratedPalettes: (palettes: Palette[] | []) => void;
-  
+  setGeneratedPalettes: (palettes: Palette[]) => void;
+
   theme: Palette | null;
   setTheme: (theme: Palette | null) => void;
 }
@@ -71,16 +77,17 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
   const { options } = useOptions();
 
   const [theme, setTheme] = useState<Palette | null>(null);
-  const [generatedPalettes, setGeneratedPalettes] = useState<Palette[] | []>(
-    [],
-  );
+  const [generatedPalettes, setGeneratedPalettes] = useState<Palette[]>([]);
 
-  const contextValue = {
-    theme,
-    setTheme,
-    generatedPalettes,
-    setGeneratedPalettes,
-  };
+  const contextValue = useMemo(
+    () => ({
+      theme,
+      setTheme,
+      generatedPalettes,
+      setGeneratedPalettes,
+    }),
+    [theme, generatedPalettes],
+  );
 
   useInsertionEffect(() => {
     if (theme) {
