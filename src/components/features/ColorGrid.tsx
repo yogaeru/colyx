@@ -2,7 +2,6 @@ import { SunIcon, MoonIcon } from "lucide-react";
 import { formatColor } from "svaela";
 import type { MaterialSchemeResult, ColorFormatMap } from "svaela";
 
-import { cn } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import { useOptions } from "@/hooks/useOptions";
 import { materialYouColors } from "@/lib/colors";
@@ -13,7 +12,6 @@ import { ToggleGroup } from "../shared/ToggleGroup";
 interface ColorGridProps {
   value: MaterialSchemeResult<keyof ColorFormatMap>[] | [];
   activeIndex: number;
-  onActiveChange: (index: number) => void;
 }
 
 const toggleItems = [
@@ -24,33 +22,11 @@ const toggleItems = [
 export function ColorGrid({
   value,
   activeIndex,
-  onActiveChange,
 }: ColorGridProps) {
   const { options, setOptions } = useOptions();
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-        {value.map((scheme, index) => {
-          const activeId = value[activeIndex]?.id;
-          return (
-            <div
-              key={index}
-              className={cn(
-                "rounded-lg cursor-pointer hover:bg-muted/50 transition-colors",
-              )}
-              onClick={() => onActiveChange(index)}
-            >
-              <ColorSwatch
-                className={`${activeId === scheme.id ? "border-3 border-primary" : ""}`}
-                title={scheme.name}
-                color={formatColor(scheme.sourceColor, options.colorOutput)}
-              />
-            </div>
-          );
-        })}
-      </div>
-
       {/* Color Swatch Container */}
       <div className="flex flex-col gap-3 bg-popover rounded-xl p-3">
         <ToggleGroup

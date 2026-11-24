@@ -1,10 +1,13 @@
 import { useCallback, useState, useEffect } from "react";
-import { PaletteIcon } from "lucide-react";
-import { createMaterialSchemesFromImageSync } from "svaela";
+import { FileCodeIcon, PaletteIcon } from "lucide-react";
+import { createMaterialSchemesFromImageSync, formatColor } from "svaela";
 
 import { ColorGrid } from "../features/ColorGrid";
+import { TemplateEngine } from "../features/TemplateEngine";
 import { MaterialOptions } from "../features/MaterialOptions";
 import { Separator } from "../ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { ColorSwatch } from "../shared/ColorSwatch";
 import { FileUpload } from "../shared/FileUpload";
 
 import { useTheme } from "@/hooks/useTheme";
@@ -110,17 +113,65 @@ export function PaletteConfig() {
         />
 
         {generatedPalettes.length > 0 && imageElement ? (
-          <div id="result" className="flex flex-col gap-2 ">
+          <div id="result" className="flex flex-col gap-4">
             <div className="flex w-full items-center gap-5 overflow-hidden">
               <span className="text-lg font-bold">Result</span>
               <Separator className="border-t-2 w-full" />
             </div>
 
-            <ColorGrid
-              value={generatedPalettes}
-              activeIndex={activeSchemeIndex}
-              onActiveChange={setActiveSchemeIndex}
-            />
+            {/* Extracted Source Scheme Selector */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+              {generatedPalettes.map((scheme, index) => {
+                const activeId = generatedPalettes[activeSchemeIndex]?.id;
+                return (
+                  <div
+                    key={scheme.id}
+                    className={cn(
+                      "rounded-lg cursor-pointer hover:bg-muted/50 transition-colors",
+                    )}
+                    onClick={() => setActiveSchemeIndex(index)}
+                  >
+                    <ColorSwatch
+                      className={
+                        activeId === scheme.id ? "border-3 border-primary" : ""
+                      }
+                      title={scheme.name}
+                      color={formatColor(
+                        scheme.sourceColor,
+                        options.colorOutput,
+                      )}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            <Tabs defaultValue="palette">
+              <TabsList variant="default" aria-label="Result view">
+                <TabsTrigger value="palette">
+                  <PaletteIcon aria-hidden="true" />
+                  Palette
+                </TabsTrigger>
+                <TabsTrigger value="template">
+                  <FileCodeIcon aria-hidden="true" />
+                  Template
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="palette">
+                <ColorGrid
+                  value={generatedPalettes}
+                  activeIndex={activeSchemeIndex}
+                />
+              </TabsContent>
+
+              <TabsContent value="template">
+                <TemplateEngine
+                  value={generatedPalettes}
+                  activeIndex={activeSchemeIndex}
+                />
+              </TabsContent>
+            </Tabs>
           </div>
         ) : (
           <div className="flex min-h-50 flex-col items-center justify-center gap-4 rounded-2xl border border-dashed bg-muted/20 p-6 text-center">
